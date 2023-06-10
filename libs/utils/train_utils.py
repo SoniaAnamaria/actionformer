@@ -11,7 +11,7 @@ import torch.optim as optim
 
 from .lr_schedulers import LinearWarmupMultiStepLR, LinearWarmupCosineAnnealingLR
 from .postprocessing import postprocess_results
-from ..modeling import MaskedConv1D, Scale, AffineDropPath, LayerNorm
+from ..modeling.blocks import MaskedConv1D, Scale, AffineDropPath, LayerNorm
 
 
 ################################################################################

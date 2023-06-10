@@ -1,7 +1,7 @@
 # Functions for 1D NMS, modified from:
 # https://github.com/open-mmlab/mmcv/blob/master/mmcv/ops/nms.py
-import nms_1d_cpu
 import torch
+import nms_1d_cpu
 
 
 class NMSop(torch.autograd.Function):

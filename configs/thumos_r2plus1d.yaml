@@ -3,11 +3,11 @@ train_split: ['validation']
 val_split: ['test']
 dataset: {
   json_file: ./data/thumos/annotations/thumos14.json,
-  feat_folder: ./data/thumos/i3d_features_no_gvf,
+  feat_folder: ./data/thumos/r2plus1d_34_features,
   file_prefix: ~,
   file_ext: .pkl,
   num_classes: 20,
-  input_dim: 1024,
+  input_dim: 512,
   feat_stride: 1,
   num_frames: 16,
   default_fps: 15,
@@ -20,9 +20,9 @@ model: {
   fpn_type: identity,
   max_buffer_len_factor: 12.0,
   n_mha_win_size: 19,
-  embd_dim: 256,
-  fpn_dim: 256,
-  head_dim: 256,
+  embd_dim: 512,
+  fpn_dim: 512,
+  head_dim: 512,
 }
 opt: {
   learning_rate: 0.0001,

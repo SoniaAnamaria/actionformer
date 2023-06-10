@@ -2,7 +2,6 @@ import torch
 from torch.nn import functional as F
 
 
-@torch.jit.script
 def sigmoid_focal_loss(
         inputs: torch.Tensor,
         targets: torch.Tensor,
@@ -107,7 +106,6 @@ def ctr_giou_loss_1d(
     return loss
 
 
-@torch.jit.script
 def ctr_diou_loss_1d(
         input_offsets: torch.Tensor,
         target_offsets: torch.Tensor,
