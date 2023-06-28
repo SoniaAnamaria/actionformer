@@ -42,7 +42,7 @@ def main(args):
 
     if args.topk > 0:
         cfg['model']['test_cfg']['max_seg_num'] = args.topk
-    pprint(cfg)
+    # pprint(cfg)
 
     """1. fix all randomness"""
     # fix the random seeds (this will fix everything)
@@ -64,14 +64,14 @@ def main(args):
     model = nn.DataParallel(model, device_ids=cfg['devices'])
 
     """4. load ckpt"""
-    print("=> loading checkpoint '{}'".format(ckpt_file))
+    print("Loading checkpoint '{}'".format(ckpt_file))
     # load ckpt, reset epoch / best rmse
     checkpoint = torch.load(
         ckpt_file,
         map_location=lambda storage, loc: storage.cuda(cfg['devices'][0])
     )
     # load ema model instead
-    print("Loading from EMA model ...")
+    # print("Loading from EMA model ...")
     model.load_state_dict(checkpoint['state_dict_ema'])
     del checkpoint
 
@@ -88,7 +88,7 @@ def main(args):
         output_file = os.path.join(os.path.split(ckpt_file)[0], 'eval_results.pkl')
 
     """5. Test the model"""
-    print("\nStart testing model {:s} ...".format(cfg['model_name']))
+    # print("\nStart testing model {:s} ...".format(cfg['model_name']))
     start = time.time()
     mAP = valid_one_epoch(
         val_loader,
@@ -101,7 +101,7 @@ def main(args):
         print_freq=args.print_freq
     )
     end = time.time()
-    print("All done! Total time: {:0.2f} sec".format(end - start))
+    # print("All done! Total time: {:0.2f} sec".format(end - start))
     return
 
 

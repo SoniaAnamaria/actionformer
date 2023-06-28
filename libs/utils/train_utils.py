@@ -410,9 +410,9 @@ def valid_one_epoch(
             start = time.time()
 
             # print timing
-            print('Test: [{0:05d}/{1:05d}]\t'
-                  'Time {batch_time.val:.2f} ({batch_time.avg:.2f})'.format(
-                iter_idx, len(val_loader), batch_time=batch_time))
+            # print('Test: [{0:05d}/{1:05d}]\t'
+            #       'Time {batch_time.val:.2f} ({batch_time.avg:.2f})'.format(
+            #     iter_idx, len(val_loader), batch_time=batch_time))
 
     # gather all stats and evaluate
     results['t-start'] = torch.cat(results['t-start']).numpy()
