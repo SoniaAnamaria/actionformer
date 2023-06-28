@@ -1,14 +1,17 @@
 # Modified from official EPIC-Kitchens action detection evaluation code
 # see https://github.com/epic-kitchens/C2-Action-Detection/blob/master/EvaluationCode/evaluate_detection_json_ek100.py
+import datetime as dt
 import json
+import numpy as np
 import os
+import pandas as pd
+from joblib import Parallel, delayed
 from typing import Dict
 from typing import List
 from typing import Tuple
 
-import numpy as np
-import pandas as pd
-from joblib import Parallel, delayed
+pd.set_option('display.max_columns', None)
+pd.set_option('display.colheader_justify', 'center')
 
 
 def remove_duplicate_annotations(ants, tol=1e-3):
@@ -224,7 +227,23 @@ class ANETdetection(object):
 
         # make the label ids consistent
         preds['label'] = preds['label'].replace(self.activity_index)
-
+        rows = preds.sort_values(by='score', ascending=False)
+        rows = rows.loc[rows['video-id'] == 'video_test_0001159']
+        rows = rows.replace([12], 'JavelinThrow')
+        rows = rows[['video-id', 't-start', 't-end', 'label']]
+        rows = rows.iloc[:10]
+        rows = rows.sort_values(by='t-start')
+        rows = rows.iloc[1:10]
+        rows = rows.drop([30203, 30201, 30208, 30204])
+        rows['s-datetime'] = pd.to_datetime(rows['t-start'], unit='s')
+        rows['s-datetime_string'] = rows['s-datetime'].dt.strftime('%H:%M:%S')
+        rows['e-datetime'] = pd.to_datetime(rows['t-end'], unit='s')
+        rows['e-datetime_string'] = rows['e-datetime'].dt.strftime('%H:%M:%S')
+        rows = rows[['video-id', 's-datetime_string', 'e-datetime_string', 'label']]
+        rows = rows.rename(columns={"video-id": "videoclip", "s-datetime_string": "start", "e-datetime_string": "stop",
+                                    "label": "eticheta"})
+        print(' ')
+        print(rows.to_string(index=False))
         # compute mAP
         self.ap = self.wrapper_compute_average_precision(preds)
         self.recall = self.wrapper_compute_topkx_recall(preds)
@@ -235,17 +254,17 @@ class ANETdetection(object):
         # print results
         if verbose:
             # print the results
-            print('[RESULTS] Action detection results on {:s}.'.format(
-                self.dataset_name)
-            )
+            # print('[RESULTS] Action detection results on {:s}.'.format(
+            #     self.dataset_name)
+            # )
             block = ''
             for tiou, tiou_mAP, tiou_mRecall in zip(self.tiou_thresholds, mAP, mRecall):
                 block += '\n|tIoU = {:.2f}: '.format(tiou)
                 block += 'mAP = {:>4.2f} (%) '.format(tiou_mAP * 100)
                 for idx, k in enumerate(self.top_k):
                     block += 'Recall@{:d}x = {:>4.2f} (%) '.format(k, tiou_mRecall[idx] * 100)
-            print(block)
-            print('Average mAP: {:>4.2f} (%)'.format(average_mAP * 100))
+            # print(block)
+            # print('Average mAP: {:>4.2f} (%)'.format(average_mAP * 100))
 
         # return the results
         return mAP, average_mAP, mRecall

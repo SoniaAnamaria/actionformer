@@ -2,15 +2,15 @@ dataset_name: thumos
 train_split: ['validation']
 val_split: ['test']
 dataset: {
-  json_file: ./data/thumos/annotations/thumos14.json,
-  feat_folder: ./data/thumos/x3d_features_12,
+  json_file: actionformer/data/thumos/annotations/thumos14.json,
+  feat_folder: actionformer/data/thumos/x3d_features_with_gvf,
   file_prefix: ~,
   file_ext: .pkl,
   num_classes: 20,
   input_dim: 432,
   feat_stride: 1,
   num_frames: 16,
-  default_fps: 12,
+  default_fps: 15,
   # serve as data augmentation
   trunc_thresh: 0.5,
   crop_ratio: [0.9, 1.0],
@@ -20,9 +20,9 @@ model: {
   fpn_type: identity,
   max_buffer_len_factor: 12.0,
   n_mha_win_size: 19,
-  embd_dim: 512,
-  fpn_dim: 512,
-  head_dim: 512,
+  embd_dim: 256,
+  fpn_dim: 256,
+  head_dim: 256,
 }
 opt: {
   learning_rate: 0.0001,

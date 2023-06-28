@@ -6,7 +6,7 @@ setup(
     ext_modules=[
         CppExtension(
             name='nms_1d_cpu',
-            sources=['libs/utils/csrc/nms_cpu.cpp'],
+            sources=['actionformer/libs/utils/csrc/nms_cpu.cpp'],
             extra_compile_args=['-fopenmp']
         )
     ],
